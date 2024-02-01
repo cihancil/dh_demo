@@ -10,8 +10,12 @@ import TestHeader from "../components/TestHeader"
 import Colors from "../utils/Colors"
 import TestButtons from "../components/TestButtons"
 import TestQuestions from "../components/TestQuestions"
+import { useNavigation } from "@react-navigation/native"
+import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { RootStackParamList } from "../Navigator"
 
 const TestScreen = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Test'>>()
   const bottomSheetRef = useRef<BottomSheet>(null)
   const bottomSheetRef2 = useRef<BottomSheet>(null)
   const snapPoints = useMemo(() => ['10%', '100%'], [])
@@ -38,7 +42,7 @@ const TestScreen = () => {
       {!test && <View style={styles.indicatorContainer}>
         <ActivityIndicator color={Colors.white} />
       </View>}
-      {test && <TestQuestions test={test} activeIndex={activeIndex} />}
+      <TestQuestions />
       {test && <TestButtons
         onPreviousPress={() => {
           dispatch(testActions.navigatePrevious())
@@ -46,7 +50,9 @@ const TestScreen = () => {
         onNextPress={() => {
           dispatch(testActions.navigateNext())
         }}
-        onSubmitPress={() => { }}
+        onSubmitPress={() => {
+          navigation.push('Result')
+        }}
         style={{
           position: 'absolute',
           bottom: 0,

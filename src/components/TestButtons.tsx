@@ -1,5 +1,7 @@
 import { SafeAreaView, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native"
-import Button from "./Button"
+import Button, { ButtonType } from "./Button"
+import { useSelector } from "react-redux"
+import { RootState } from "../store"
 
 const TestButtons = ({
   style,
@@ -12,12 +14,17 @@ const TestButtons = ({
   onNextPress: () => void
   onSubmitPress: () => void
 }) => {
+  const test = useSelector((state: RootState) => state.test.test)
+  const activeIndex = useSelector((state: RootState) => state.test.activeIndex)
   return (
     <SafeAreaView style={style}>
       <View style={styles.background} />
       <View style={styles.innerContainer}>
-        <Button label={'<   Önceki Soru'} onPress={onPreviousPress} />
-        <Button label={'Sonraki Soru   >'} onPress={onNextPress} />
+        <Button label={'<   Önceki Soru'} onPress={onPreviousPress} disabled={activeIndex === 0} />
+        {(test?.questions.length && activeIndex === test?.questions.length - 1)
+          ? <Button label={'Bitir'} onPress={onSubmitPress} buttonType={ButtonType.Submit} />
+          : <Button label={'Sonraki Soru   >'} onPress={onNextPress} />
+        }
       </View>
     </SafeAreaView>
   )
@@ -26,7 +33,7 @@ const TestButtons = ({
 const styles = StyleSheet.create({
   background: {
     backgroundColor: 'black',
-    opacity: 0.3,
+    opacity: 0.5,
     position: 'absolute',
     top: 0,
     bottom: 0,

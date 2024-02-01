@@ -4,11 +4,13 @@ import { TestType } from '../types/TestType'
 export type TestState = {
   test: TestType | null
   activeIndex: number
+  userAnswers: Record<string, string | null>
 }
 
 const initialState: TestState = {
   test: null,
   activeIndex: 0,
+  userAnswers: {},
 }
 
 const testSlice = createSlice({
@@ -18,6 +20,17 @@ const testSlice = createSlice({
     setTestData(state, action) {
       const { testData } = action.payload
       state.test = testData
+      if (state.test) {
+        state.test.questions.forEach(q => {
+          state.userAnswers[q.id] = null
+        })
+      }
+    },
+    setAnswer(state, action) {
+      const { questionId, choiceId } = action.payload
+      if (state.test) {
+        state.userAnswers[questionId] = choiceId
+      }
     },
     navigateNext(state) {
       if (!state.test) {

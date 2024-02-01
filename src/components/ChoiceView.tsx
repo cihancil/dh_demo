@@ -4,19 +4,35 @@ import { ChoiceType } from "../types/ChoiceType"
 import Colors from "../utils/Colors"
 import { TouchableOpacity } from "react-native-gesture-handler"
 
+export enum ChoiceStatus {
+  Idle,
+  Correct,
+  Wrong,
+}
+
 const ChoiceView = ({
   choice,
   index,
-  selected = false,
+  selected,
+  disabled,
+  onToggle,
+  status = ChoiceStatus.Idle,
 }: {
   choice: ChoiceType,
   index: number,
   selected: boolean,
+  disabled: boolean,
+  onToggle: () => void,
+  status: ChoiceStatus,
 }) => {
-
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,
+    (status === ChoiceStatus.Correct) ? {
+      backgroundColor: 'green',
+    } : (selected && status === ChoiceStatus.Wrong) ? { backgroundColor: 'red', } : null]}>
       <TouchableOpacity
+        onPress={onToggle}
+        disabled={disabled}
         style={styles.radioContainer}
         hitSlop={{ left: 16, right: 16, top: 16, bottom: 16 }}>
         <View style={styles.radioOuter}>
@@ -43,6 +59,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     color: Colors.text,
+    flex: 1,
   },
   radioContainer: {
     width: 28,

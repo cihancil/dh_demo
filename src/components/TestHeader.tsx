@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import Colors from "../utils/Colors"
 import ProgressBar from "./ProgressBar"
 import { TestType } from "../types/TestType"
@@ -16,13 +16,13 @@ const TestHeader = ({
       <SafeAreaView>
         <View style={styles.headerRow}>
           <TouchableOpacity style={styles.iconContainer}>
-
+            <Image source={require('../../assets/arrow-left.png')} />
           </TouchableOpacity>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{test?.title}</Text>
           </View>
           <TouchableOpacity style={styles.iconContainer}>
-
+            <Image source={require('../../assets/more-horizontal.png')} />
           </TouchableOpacity>
         </View>
 
@@ -62,6 +62,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.lightBackground,
     borderRadius: 10,
     opacity: 0.8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   titleContainer: {
     flex: 1,
