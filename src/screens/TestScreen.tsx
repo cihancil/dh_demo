@@ -1,24 +1,36 @@
 import { StyleSheet, Text, View } from "react-native"
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet'
 import { useCallback, useEffect, useMemo, useRef } from "react"
+import { useDispatch, useSelector } from 'react-redux'
+
+import useTestData from "../query/useTestData"
+import { testActions } from "../stores/testStore"
+import { RootState } from "../stores"
 
 const TestScreen = () => {
   const bottomSheetRef = useRef<BottomSheet>(null)
   const bottomSheetRef2 = useRef<BottomSheet>(null)
-
   const snapPoints = useMemo(() => ['10%', '100%'], [])
-
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, [])
-
   const actionSheetRef = useRef()
-  useEffect(() => {
+  const handleSheetChanges = useCallback((index: number) => {
   }, [])
+
+  const dispatch = useDispatch()
+  const { data: testData } = useTestData()
+  const test = useSelector((state: RootState) => state.test.test)
+
+
+  useEffect(() => {
+    if (testData) {
+      dispatch(testActions.setTestData({
+        testData: testData,
+      }))
+    }
+  }, [dispatch, testData])
 
   return (
     <View style={styles.container}>
-      <Text>TestScreen</Text>
+      <Text>TestScreen {test?.title}</Text>
       {/* <BottomSheet
         ref={bottomSheetRef}
         index={0}
