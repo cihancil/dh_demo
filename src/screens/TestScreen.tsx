@@ -1,11 +1,15 @@
-import { StyleSheet, Text, View } from "react-native"
+import { ActivityIndicator, SafeAreaView, StyleSheet, Text, View } from "react-native"
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet'
 import { useCallback, useEffect, useMemo, useRef } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 
 import useTestData from "../query/useTestData"
-import { testActions } from "../stores/testStore"
-import { RootState } from "../stores"
+import { testActions } from "../store/testStore"
+import { RootState } from "../store"
+import TestHeader from "../components/TestHeader"
+import Colors from "../utils/Colors"
+import TestButtons from "../components/TestButtons"
+import TestQuestions from "../components/TestQuestions"
 
 const TestScreen = () => {
   const bottomSheetRef = useRef<BottomSheet>(null)
@@ -18,7 +22,7 @@ const TestScreen = () => {
   const dispatch = useDispatch()
   const { data: testData } = useTestData()
   const test = useSelector((state: RootState) => state.test.test)
-
+  const activeIndex = useSelector((state: RootState) => state.test.activeIndex)
 
   useEffect(() => {
     if (testData) {
@@ -30,7 +34,26 @@ const TestScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text>TestScreen {test?.title}</Text>
+      <TestHeader test={test} activeIndex={activeIndex} />
+      {!test && <View style={styles.indicatorContainer}>
+        <ActivityIndicator color={Colors.white} />
+      </View>}
+      {test && <TestQuestions test={test} activeIndex={activeIndex} />}
+      {test && <TestButtons
+        onPreviousPress={() => {
+          dispatch(testActions.navigatePrevious())
+        }}
+        onNextPress={() => {
+          dispatch(testActions.navigateNext())
+        }}
+        onSubmitPress={() => { }}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          left: 0,
+        }} />
+      }
       {/* <BottomSheet
         ref={bottomSheetRef}
         index={0}
@@ -90,12 +113,14 @@ const TestScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
-    backgroundColor: 'red',
+    backgroundColor: Colors.darkBackground,
   },
   contentContainer: {
     flex: 1,
     alignItems: 'center',
+  },
+  indicatorContainer: {
+    marginTop: 100,
   },
 })
 

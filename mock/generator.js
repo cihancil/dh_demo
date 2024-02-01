@@ -7,13 +7,13 @@ const questions = Array.from(Array(10).keys()).map(() => {
     id: faker.string.uuid(),
     description: faker.helpers.maybe(() => faker.lorem.paragraphs({
       min: 1,
-      max: 3,
+      max: 2,
     }), {
       probability: 0.5
     }) || null,
     question: faker.lorem.paragraphs({
       min: 1,
-      max: 2,
+      max: 1,
     }).slice(0, -1) + '?',
     choices: choiceIds.map((choiceId) => {
       return {

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { QueryClientProvider } from 'react-query'
 
 import Navigator from './src/Navigator'
-import store from './src/stores'
+import store from './src/store'
 import { queryClient } from './src/query/queryClient'
 
 function App(): React.JSX.Element {

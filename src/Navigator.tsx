@@ -12,7 +12,13 @@ export default function Navigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Test" component={TestScreen} />
+        <Stack.Screen
+          name="Test"
+          component={TestScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   )
