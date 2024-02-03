@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native"
 import { ChoiceType } from "../types/ChoiceType"
 import Colors from "../utils/Colors"
 import { TouchableOpacity } from "react-native-gesture-handler"
+import { memo } from "react"
 
 export enum ChoiceStatus {
   Idle,
@@ -10,7 +11,7 @@ export enum ChoiceStatus {
   Wrong,
 }
 
-const ChoiceView = ({
+const ChoiceView = memo(function ChoiceView({
   choice,
   index,
   selected,
@@ -24,7 +25,7 @@ const ChoiceView = ({
   disabled: boolean,
   onToggle: () => void,
   status: ChoiceStatus,
-}) => {
+}) {
   return (
     <View style={[styles.container,
     (status === ChoiceStatus.Correct) ? {
@@ -44,7 +45,7 @@ const ChoiceView = ({
       </Text>
     </View>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {

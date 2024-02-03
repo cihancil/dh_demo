@@ -1,13 +1,14 @@
 import { StyleSheet, Text } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import Colors from "../utils/Colors"
+import { memo } from "react"
 
 export enum ButtonType {
   Default,
   Submit,
 }
 
-const Button = ({
+const Button = memo(function Button({
   label,
   onPress,
   disabled = false,
@@ -17,7 +18,7 @@ const Button = ({
   onPress: () => void,
   disabled?: boolean,
   buttonType?: ButtonType,
-}) => {
+}) {
   return (
     <TouchableOpacity onPress={onPress} style={[
       styles.container,
@@ -28,7 +29,7 @@ const Button = ({
       </Text>
     </TouchableOpacity>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {

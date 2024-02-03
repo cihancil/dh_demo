@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from "react-native"
 import Colors from "../utils/Colors"
+import { memo } from "react"
 
-const AnswerItem = ({
+const AnswerItem = memo(function AnswerItem({
   questionNumber,
   correctChoiceIndex,
   userChoiceIndex,
@@ -9,7 +10,7 @@ const AnswerItem = ({
   questionNumber: number,
   correctChoiceIndex: number,
   userChoiceIndex: number
-}) => {
+}) {
   const userAnsweredCorrect = correctChoiceIndex === userChoiceIndex
   return (
     <View style={styles.container}>
@@ -38,7 +39,7 @@ const AnswerItem = ({
       </View>
     </View>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {
