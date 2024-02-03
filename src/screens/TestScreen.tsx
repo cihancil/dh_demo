@@ -1,6 +1,6 @@
-import { ActivityIndicator, SafeAreaView, StyleSheet, Text, View } from "react-native"
+import { ActivityIndicator, SafeAreaView, StyleSheet, View } from "react-native"
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet'
-import React, { useCallback, useEffect, useMemo, useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 
 import useTestData from "../query/useTestData"
@@ -14,15 +14,12 @@ import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { RootStackParamList } from "../Navigator"
 import ButtomDialog from "../components/BottomDialog"
+import AnswersDialog from "../components/AnswersDialog"
 
 const TestScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Test'>>()
   const bottomDialogRef = useRef<BottomSheet>(null)
-
-  // const bottomSheetRef = useRef<BottomSheet>(null)
-  // const snapPoints = useMemo(() => ['10%', '100%'], [])
-  // const handleSheetChanges = useCallback((index: number) => {
-  // }, [])
+  const answersDialogRef = useRef<BottomSheet>(null)
 
   const dispatch = useDispatch()
   const { data: testData } = useTestData()
@@ -57,41 +54,21 @@ const TestScreen = () => {
           navigation.push('Result')
         }}
         style={styles.testButtons} />
-      {/* <BottomSheet
-        ref={bottomSheetRef}
-        index={0}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        enablePanDownToClose
-        handleStyle={{
-          backgroundColor: 'white',
-          borderTopLeftRadius: 12,
-          borderTopRightRadius: 12,
-        }}
-        backdropComponent={props => (<BottomSheetBackdrop {...props}
-          opacity={0.5}
-          enableTouchThrough={false}
-          appearsOnIndex={0}
-          disappearsOnIndex={-1}
-          style={[{ backgroundColor: 'rgba(0, 0, 0, 1)' }, StyleSheet.absoluteFillObject]} />)}
-      >
-        <View style={styles.contentContainer}>
-          <Text>Awesome 🎉</Text>
-        </View>
-      </BottomSheet> */}
+      <AnswersDialog ref={answersDialogRef} />
       <ButtomDialog
         ref={bottomDialogRef}
         onClose={() => {
           bottomDialogRef.current?.close()
         }}
         onAnswersPress={() => {
-          // navigation.push('Answers')
+          bottomDialogRef.current?.close()
+          answersDialogRef?.current?.snapToIndex(0)
         }}
         onSubmitPress={() => {
+          bottomDialogRef.current?.close()
           navigation.push('Result')
         }}
       />
-
     </View>
   )
 }
