@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 16,
+    paddingTop: 10,
   },
   headerBottom: {
     minHeight: 31,

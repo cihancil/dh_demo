@@ -6,16 +6,19 @@ import { QueryClientProvider } from 'react-query'
 import Navigator from './src/Navigator'
 import store from './src/store'
 import { queryClient } from './src/query/queryClient'
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 
 function App(): React.JSX.Element {
   return (
-    <QueryClientProvider client={queryClient} contextSharing>
-      <Provider store={store}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <Navigator />
-        </GestureHandlerRootView>
-      </Provider>
-    </QueryClientProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomSheetModalProvider>
+        <QueryClientProvider client={queryClient} contextSharing>
+          <Provider store={store}>
+            <Navigator />
+          </Provider>
+        </QueryClientProvider>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   )
 
 }

@@ -1,9 +1,9 @@
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet'
-import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types'
+import BottomSheet, { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet'
 import React from "react"
 import { StyleSheet, Text, View } from "react-native"
 import Colors from '../utils/Colors'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types'
 
 const dialogHeight = 240
 
@@ -16,8 +16,8 @@ interface ButtomDialogProps {
 const ButtomDialog = React.forwardRef<BottomSheetMethods, ButtomDialogProps>((props: ButtomDialogProps, ref) => {
   return (
     <BottomSheet
-      ref={ref as React.Ref<BottomSheetMethods>}
-      index={-1}
+      ref={ref as React.Ref<BottomSheet>}
+      index={0}
       snapPoints={[dialogHeight]}
       backgroundStyle={styles.background}
       enablePanDownToClose

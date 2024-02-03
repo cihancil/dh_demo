@@ -1,23 +1,22 @@
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet'
-import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types'
+import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet'
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types'
 import React from "react"
-import { SafeAreaView, SafeAreaViewBase, SafeAreaViewComponent, StyleSheet, Text, View, useWindowDimensions } from "react-native"
-import Colors from '../utils/Colors'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { StyleSheet, Text, View, useWindowDimensions } from "react-native"
+import { hasNotch } from 'react-native-device-info';
+
 interface AnswersDialogProps {
   // onClose: () => void,
   // onAnswersPress: () => void,
   // onSubmitPress: () => void,
 }
 
-const AnswersDialog = React.forwardRef<BottomSheetMethods, AnswersDialogProps>((props: AnswersDialogProps, ref) => {
+const AnswersDialog = React.forwardRef<BottomSheetModalMethods, AnswersDialogProps>((props: AnswersDialogProps, ref) => {
   const { height } = useWindowDimensions()
   return (
-    <BottomSheet
-      ref={ref as React.Ref<BottomSheetMethods>}
-      index={-1}
-      // snapPoints={[height - statusBarHeight]}
-      snapPoints={['100%']}
+    <BottomSheetModal
+      ref={ref as React.Ref<BottomSheetModalMethods>}
+      index={0}
+      snapPoints={[height - (hasNotch() ? 60 : 20)]}
       enablePanDownToClose
       backdropComponent={props => (
         <BottomSheetBackdrop {...props}
@@ -31,7 +30,7 @@ const AnswersDialog = React.forwardRef<BottomSheetMethods, AnswersDialogProps>((
       <View style={styles.container}>
         <Text>asdasdsadas</Text>
       </View>
-    </BottomSheet>
+    </BottomSheetModal>
   )
 })
 

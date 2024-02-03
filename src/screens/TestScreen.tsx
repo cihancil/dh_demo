@@ -1,6 +1,6 @@
-import { ActivityIndicator, SafeAreaView, StyleSheet, View } from "react-native"
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet'
-import React, { useEffect, useRef } from "react"
+import { ActivityIndicator, SafeAreaView, StyleSheet, Text, View } from "react-native"
+import BottomSheet, { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
+import React, { useCallback, useEffect, useMemo, useRef } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 
 import useTestData from "../query/useTestData"
@@ -19,7 +19,7 @@ import AnswersDialog from "../components/AnswersDialog"
 const TestScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Test'>>()
   const bottomDialogRef = useRef<BottomSheet>(null)
-  const answersDialogRef = useRef<BottomSheet>(null)
+  const answersDialogRef = useRef<BottomSheetModal>(null)
 
   const dispatch = useDispatch()
   const { data: testData } = useTestData()
@@ -62,7 +62,7 @@ const TestScreen = () => {
         }}
         onAnswersPress={() => {
           bottomDialogRef.current?.close()
-          answersDialogRef?.current?.snapToIndex(0)
+          answersDialogRef?.current?.present()
         }}
         onSubmitPress={() => {
           bottomDialogRef.current?.close()
