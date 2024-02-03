@@ -7,7 +7,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const dialogHeight = 240
 
-const ButtomDialog = React.forwardRef<BottomSheetMethods, {}>(({ }, ref) => {
+interface ButtomDialogProps {
+  onClose: () => void,
+  onAnswersPress: () => void,
+  onSubmitPress: () => void,
+}
+
+const ButtomDialog = React.forwardRef<BottomSheetMethods, ButtomDialogProps>((props: ButtomDialogProps, ref) => {
   return (
     <BottomSheet
       ref={ref as React.Ref<BottomSheetMethods>}
@@ -27,15 +33,16 @@ const ButtomDialog = React.forwardRef<BottomSheetMethods, {}>(({ }, ref) => {
     >
       <View style={styles.container}>
         <View style={styles.topContainer}>
-          <TouchableOpacity style={styles.touchable}>
+          <TouchableOpacity style={styles.touchable} onPress={props.onAnswersPress}>
             <Text style={styles.textAnswers}>Cevap Anahtarı</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.touchable}>
+          <View style={styles.seperator} />
+          <TouchableOpacity style={styles.touchable} onPress={props.onSubmitPress}>
             <Text style={styles.textSubmit}>Testi Bitir</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.bottomContainer}>
-          <TouchableOpacity style={styles.touchable} >
+          <TouchableOpacity style={styles.touchable} onPress={props.onClose}>
             <Text style={styles.textCancel}>Vazgec</Text>
           </TouchableOpacity>
         </View>
@@ -70,6 +77,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.border,
     alignItems: 'stretch',
+  },
+  seperator: {
+    height: 1,
+    backgroundColor: Colors.lightBackground,
   },
   touchable: {
     height: 60,

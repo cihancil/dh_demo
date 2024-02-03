@@ -79,7 +79,18 @@ const TestScreen = () => {
           <Text>Awesome 🎉</Text>
         </View>
       </BottomSheet> */}
-      <ButtomDialog ref={bottomDialogRef} />
+      <ButtomDialog
+        ref={bottomDialogRef}
+        onClose={() => {
+          bottomDialogRef.current?.close()
+        }}
+        onAnswersPress={() => {
+          // navigation.push('Answers')
+        }}
+        onSubmitPress={() => {
+          navigation.push('Result')
+        }}
+      />
 
     </View>
   )
