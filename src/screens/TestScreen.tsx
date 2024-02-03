@@ -1,6 +1,6 @@
 import { ActivityIndicator, SafeAreaView, StyleSheet, Text, View } from "react-native"
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet'
-import { useCallback, useEffect, useMemo, useRef } from "react"
+import React, { useCallback, useEffect, useMemo, useRef } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 
 import useTestData from "../query/useTestData"
@@ -13,15 +13,16 @@ import TestQuestions from "../components/TestQuestions"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { RootStackParamList } from "../Navigator"
+import ButtomDialog from "../components/BottomDialog"
 
 const TestScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Test'>>()
-  const bottomSheetRef = useRef<BottomSheet>(null)
-  const bottomSheetRef2 = useRef<BottomSheet>(null)
-  const snapPoints = useMemo(() => ['10%', '100%'], [])
-  const actionSheetRef = useRef()
-  const handleSheetChanges = useCallback((index: number) => {
-  }, [])
+  const bottomDialogRef = useRef<BottomSheet>(null)
+
+  // const bottomSheetRef = useRef<BottomSheet>(null)
+  // const snapPoints = useMemo(() => ['10%', '100%'], [])
+  // const handleSheetChanges = useCallback((index: number) => {
+  // }, [])
 
   const dispatch = useDispatch()
   const { data: testData } = useTestData()
@@ -38,12 +39,14 @@ const TestScreen = () => {
 
   return (
     <View style={styles.container}>
-      <TestHeader test={test} activeIndex={activeIndex} />
+      <TestHeader test={test} activeIndex={activeIndex} onMenuPress={() => {
+        bottomDialogRef.current?.snapToIndex(0)
+      }} />
       {!test && <View style={styles.indicatorContainer}>
         <ActivityIndicator color={Colors.white} />
       </View>}
       <TestQuestions />
-      {test && <TestButtons
+      <TestButtons
         onPreviousPress={() => {
           dispatch(testActions.navigatePrevious())
         }}
@@ -53,13 +56,7 @@ const TestScreen = () => {
         onSubmitPress={() => {
           navigation.push('Result')
         }}
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          right: 0,
-          left: 0,
-        }} />
-      }
+        style={styles.testButtons} />
       {/* <BottomSheet
         ref={bottomSheetRef}
         index={0}
@@ -82,36 +79,8 @@ const TestScreen = () => {
           <Text>Awesome 🎉</Text>
         </View>
       </BottomSheet> */}
+      <ButtomDialog ref={bottomDialogRef} />
 
-      <BottomSheet
-        ref={bottomSheetRef2}
-        index={0}
-        snapPoints={['30%']}
-        backgroundStyle={{
-          backgroundColor: 'transparent',
-        }}
-        onChange={handleSheetChanges}
-        enablePanDownToClose
-        handleComponent={null}
-        backdropComponent={props => (<BottomSheetBackdrop {...props}
-          opacity={0.5}
-          enableTouchThrough={false}
-          appearsOnIndex={0}
-          disappearsOnIndex={-1}
-          style={[{ backgroundColor: 'rgba(0, 0, 0, 1)' }, StyleSheet.absoluteFillObject]} />)}
-      >
-        <View style={{
-          height: 200,
-          paddingHorizontal: 16,
-        }}>
-          <View style={{
-            height: 100,
-            backgroundColor: 'white',
-          }}>
-            <Text>Awesome 🎉</Text>
-          </View>
-        </View>
-      </BottomSheet>
     </View>
   )
 }
@@ -127,6 +96,12 @@ const styles = StyleSheet.create({
   },
   indicatorContainer: {
     marginTop: 100,
+  },
+  testButtons: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    left: 0,
   },
 })
 

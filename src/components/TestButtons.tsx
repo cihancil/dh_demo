@@ -16,6 +16,7 @@ const TestButtons = ({
 }) => {
   const test = useSelector((state: RootState) => state.test.test)
   const activeIndex = useSelector((state: RootState) => state.test.activeIndex)
+  if (!test) return null
   return (
     <SafeAreaView style={style}>
       <View style={styles.background} />

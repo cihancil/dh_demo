@@ -6,11 +6,12 @@ import { TestType } from "../types/TestType"
 const TestHeader = ({
   test,
   activeIndex,
+  onMenuPress,
 }: {
   test: TestType | null,
   activeIndex: number,
+  onMenuPress: () => void,
 }) => {
-
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -21,7 +22,7 @@ const TestHeader = ({
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{test?.title}</Text>
           </View>
-          <TouchableOpacity style={styles.iconContainer}>
+          <TouchableOpacity style={styles.iconContainer} onPress={onMenuPress}>
             <Image source={require('../../assets/more-horizontal.png')} />
           </TouchableOpacity>
         </View>

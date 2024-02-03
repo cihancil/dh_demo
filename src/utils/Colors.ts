@@ -7,4 +7,6 @@ export default {
   button: '#03A9F1',
   buttonSuccess: '#1ABC9C',
   white: '#F8FAFC',
+  border: '#43709A',
+  alert: '#F97277',
 }
