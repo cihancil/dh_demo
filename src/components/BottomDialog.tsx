@@ -17,7 +17,7 @@ const ButtomDialog = React.forwardRef<BottomSheetMethods, ButtomDialogProps>((pr
   return (
     <BottomSheet
       ref={ref as React.Ref<BottomSheet>}
-      index={0}
+      index={-1}
       snapPoints={[dialogHeight]}
       backgroundStyle={styles.background}
       enablePanDownToClose
