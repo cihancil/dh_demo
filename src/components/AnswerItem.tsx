@@ -6,10 +6,12 @@ const AnswerItem = memo(function AnswerItem({
   questionNumber,
   correctChoiceIndex,
   userChoiceIndex,
+  questionId,
 }: {
   questionNumber: number,
   correctChoiceIndex: number,
-  userChoiceIndex: number
+  userChoiceIndex: number,
+  questionId: string,
 }) {
   const userAnsweredCorrect = correctChoiceIndex === userChoiceIndex
   return (
@@ -28,7 +30,7 @@ const AnswerItem = memo(function AnswerItem({
                 ? Colors.button :
                 null
           return (
-            <View style={[styles.choiceContainer, {
+            <View key={`question_${questionId}_choice_${choice}`} style={[styles.choiceContainer, {
               backgroundColor: color || 'transparent',
               borderColor: color || Colors.lightBackground,
             }]}>

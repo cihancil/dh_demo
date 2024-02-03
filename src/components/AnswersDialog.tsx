@@ -50,6 +50,7 @@ const AnswersDialog = React.forwardRef<BottomSheetModalMethods, AnswersDialogPro
             return (
               <AnswerItem
                 key={item.id}
+                questionId={item.id}
                 questionNumber={index + 1}
                 correctChoiceIndex={correctChoiceIndex}
                 userChoiceIndex={userChoiceIndex}
