@@ -26,7 +26,6 @@ const TestHeader = ({
             <Image source={require('../../assets/more-horizontal.png')} />
           </TouchableOpacity>
         </View>
-
         <View style={styles.headerBottom}>
           <View style={styles.descriptionContainer}>
             <Text style={styles.description}>{test?.description}</Text>
@@ -34,8 +33,6 @@ const TestHeader = ({
           </View>
           {test && <ProgressBar percentage={(activeIndex + 1) / test!.questions.length} />}
         </View>
-
-
       </SafeAreaView>
     </View>
   )

@@ -1,6 +1,4 @@
 import React from 'react'
-import {
-} from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
@@ -8,6 +6,7 @@ import TestScreen from './screens/TestScreen'
 import ResultScreen from './screens/ResultScreen'
 
 const Stack = createNativeStackNavigator()
+const screenOptions = { headerShown: false }
 
 export default function Navigator() {
   return (
@@ -18,16 +17,12 @@ export default function Navigator() {
         <Stack.Screen
           name="Test"
           component={TestScreen}
-          options={{
-            headerShown: false,
-          }}
+          options={screenOptions}
         />
         <Stack.Screen
           name="Result"
           component={ResultScreen}
-          options={{
-            headerShown: false,
-          }}
+          options={screenOptions}
         />
       </Stack.Navigator>
     </NavigationContainer>

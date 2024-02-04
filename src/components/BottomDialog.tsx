@@ -1,5 +1,5 @@
-import BottomSheet, { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet'
-import React from "react"
+import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetModal } from '@gorhom/bottom-sheet'
+import React, { useCallback, useMemo } from "react"
 import { StyleSheet, Text, View } from "react-native"
 import Colors from '../utils/Colors'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -14,6 +14,15 @@ interface ButtomDialogProps {
 }
 
 const ButtomDialog = React.forwardRef<BottomSheetMethods, ButtomDialogProps>((props: ButtomDialogProps, ref) => {
+  const renderBackdropComponent = useCallback((props: BottomSheetBackdropProps) => {
+    return <BottomSheetBackdrop {...props}
+      opacity={0.5}
+      enableTouchThrough={false}
+      appearsOnIndex={0}
+      disappearsOnIndex={-1}
+      style={styles.backdrop} />
+  }, [])
+
   return (
     <BottomSheet
       ref={ref as React.Ref<BottomSheet>}
@@ -22,14 +31,7 @@ const ButtomDialog = React.forwardRef<BottomSheetMethods, ButtomDialogProps>((pr
       backgroundStyle={styles.background}
       enablePanDownToClose
       handleComponent={null}
-      backdropComponent={props => (
-        <BottomSheetBackdrop {...props}
-          opacity={0.5}
-          enableTouchThrough={false}
-          appearsOnIndex={0}
-          disappearsOnIndex={-1}
-          style={[styles.backdrop, StyleSheet.absoluteFillObject]} />
-      )}
+      backdropComponent={renderBackdropComponent}
     >
       <View style={styles.container}>
         <View style={styles.topContainer}>
@@ -57,6 +59,7 @@ const styles = StyleSheet.create({
   },
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 1)',
+    ...StyleSheet.absoluteFillObject,
   },
   container: {
     height: dialogHeight,

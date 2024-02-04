@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native"
 import Colors from "../utils/Colors"
-import { memo } from "react"
+import { memo, useCallback } from "react"
 
 const AnswerItem = memo(function AnswerItem({
   questionNumber,
@@ -13,31 +13,35 @@ const AnswerItem = memo(function AnswerItem({
   userChoiceIndex: number,
   questionId: string,
 }) {
-  const userAnsweredCorrect = correctChoiceIndex === userChoiceIndex
+  const renderChoices = useCallback(() => {
+    const userAnsweredCorrect = correctChoiceIndex === userChoiceIndex
+    return ['A', 'B', 'C', 'D', 'E'].map((choice, index) => {
+      const usersAnswer = userChoiceIndex === index
+      const markAsWrong = usersAnswer && !userAnsweredCorrect
+      const markAsCorrect = (userChoiceIndex !== -1) && !userAnsweredCorrect && (index === correctChoiceIndex)
+      const color = markAsCorrect
+        ? Colors.buttonSuccess
+        : markAsWrong
+          ? Colors.alert
+          : usersAnswer
+            ? Colors.button :
+            null
+      return (
+        <View key={`question_${questionId}_choice_${choice}`} style={[styles.choiceContainer, {
+          backgroundColor: color || 'transparent',
+          borderColor: color || Colors.lightBackground,
+        }]}>
+          <Text style={styles.textChoice}>{choice}</Text>
+        </View>
+      )
+    })
+  }, [questionId, correctChoiceIndex, userChoiceIndex])
+
   return (
     <View style={styles.container}>
       <Text style={styles.textCount}>{`${questionNumber}. Soru`}</Text>
       <View style={styles.choicesContainer}>
-        {['A', 'B', 'C', 'D', 'E'].map((choice, index) => {
-          const usersAnswer = userChoiceIndex === index
-          const markAsWrong = usersAnswer && !userAnsweredCorrect
-          const markAsCorrect = (userChoiceIndex !== -1) && !userAnsweredCorrect && (index === correctChoiceIndex)
-          const color = markAsCorrect
-            ? Colors.buttonSuccess
-            : markAsWrong
-              ? Colors.alert
-              : usersAnswer
-                ? Colors.button :
-                null
-          return (
-            <View key={`question_${questionId}_choice_${choice}`} style={[styles.choiceContainer, {
-              backgroundColor: color || 'transparent',
-              borderColor: color || Colors.lightBackground,
-            }]}>
-              <Text style={styles.textChoice}>{choice}</Text>
-            </View>
-          )
-        })}
+        {renderChoices()}
       </View>
     </View>
   )

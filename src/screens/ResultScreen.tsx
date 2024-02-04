@@ -6,7 +6,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { RootStackParamList } from "../Navigator"
 import { useSelector } from "react-redux"
 import { RootState } from "../store"
-import { useMemo } from "react"
+import { useCallback, useMemo } from "react"
 
 const ResultScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Result'>>()
@@ -36,6 +36,10 @@ const ResultScreen = () => {
     }
   }, [test?.questions, userAnswers])
 
+  const handleSubmit = useCallback(() => {
+    navigation.pop()
+  }, [navigation])
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
@@ -62,9 +66,7 @@ const ResultScreen = () => {
             </View>
           </View>
         </View>
-        <Button label="Üniteye Başla" onPress={() => {
-          navigation.pop()
-        }} />
+        <Button label="Üniteye Başla" onPress={handleSubmit} />
       </View>
     </SafeAreaView>
   )

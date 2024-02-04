@@ -1,7 +1,9 @@
-import { ActivityIndicator, SafeAreaView, StyleSheet, Text, View } from "react-native"
-import BottomSheet, { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
-import React, { useCallback, useEffect, useMemo, useRef } from "react"
+import { ActivityIndicator, StyleSheet, View } from "react-native"
+import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet'
+import React, { useCallback, useEffect, useRef } from "react"
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigation } from "@react-navigation/native"
+import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 
 import useTestData from "../query/useTestData"
 import { testActions } from "../store/testStore"
@@ -9,9 +11,7 @@ import { RootState } from "../store"
 import TestHeader from "../components/TestHeader"
 import Colors from "../utils/Colors"
 import TestButtons from "../components/TestButtons"
-import TestQuestions from "../components/TestQuestions"
-import { useNavigation } from "@react-navigation/native"
-import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import TestQuestionView from "../components/TestQuestionView"
 import { RootStackParamList } from "../Navigator"
 import ButtomDialog from "../components/BottomDialog"
 import AnswersDialog from "../components/AnswersDialog"
@@ -34,40 +34,57 @@ const TestScreen = () => {
     }
   }, [dispatch, testData])
 
+  const handleMenuPress = useCallback(() => {
+    bottomDialogRef.current?.snapToIndex(0)
+  }, [bottomDialogRef.current])
+
+  const handlePreviousPress = useCallback(() => {
+    dispatch(testActions.navigatePrevious())
+  }, [dispatch, testActions])
+
+  const handleNextPress = useCallback(() => {
+    dispatch(testActions.navigateNext())
+  }, [dispatch, testActions])
+
+  const handleButtonsSubmitPress = useCallback(() => {
+    navigation.push('Result')
+  }, [navigation])
+
+  const handleButtomDialogClose = useCallback(() => {
+    bottomDialogRef.current?.close()
+  }, [bottomDialogRef.current])
+
+  const handleButtomDialogAnswersPress = useCallback(() => {
+    bottomDialogRef.current?.close()
+    answersDialogRef?.current?.present()
+  }, [bottomDialogRef.current, answersDialogRef?.current])
+
+  const handleButtomDialogSubmitPress = useCallback(() => {
+    bottomDialogRef.current?.close()
+    navigation.push('Result')
+  }, [bottomDialogRef.current, navigation])
+
   return (
     <View style={styles.container}>
-      <TestHeader test={test} activeIndex={activeIndex} onMenuPress={() => {
-        bottomDialogRef.current?.snapToIndex(0)
-      }} />
-      {!test && <View style={styles.indicatorContainer}>
-        <ActivityIndicator color={Colors.white} />
-      </View>}
-      <TestQuestions />
+      <TestHeader test={test} activeIndex={activeIndex} onMenuPress={handleMenuPress} />
+      {
+        !test &&
+        <View style={styles.indicatorContainer}>
+          <ActivityIndicator color={Colors.white} />
+        </View>
+      }
+      <TestQuestionView />
       <TestButtons
-        onPreviousPress={() => {
-          dispatch(testActions.navigatePrevious())
-        }}
-        onNextPress={() => {
-          dispatch(testActions.navigateNext())
-        }}
-        onSubmitPress={() => {
-          navigation.push('Result')
-        }}
+        onPreviousPress={handlePreviousPress}
+        onNextPress={handleNextPress}
+        onSubmitPress={handleButtonsSubmitPress}
         style={styles.testButtons} />
       <AnswersDialog ref={answersDialogRef} />
       <ButtomDialog
         ref={bottomDialogRef}
-        onClose={() => {
-          bottomDialogRef.current?.close()
-        }}
-        onAnswersPress={() => {
-          bottomDialogRef.current?.close()
-          answersDialogRef?.current?.present()
-        }}
-        onSubmitPress={() => {
-          bottomDialogRef.current?.close()
-          navigation.push('Result')
-        }}
+        onClose={handleButtomDialogClose}
+        onAnswersPress={handleButtomDialogAnswersPress}
+        onSubmitPress={handleButtomDialogSubmitPress}
       />
     </View>
   )

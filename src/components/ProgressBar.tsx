@@ -6,7 +6,7 @@ interface ProgressBarProps {
   percentage: number
 }
 
-const ProgressBar = ({ percentage }: ProgressBarProps) => {
+const ProgressBar = React.memo(function ProgressBar({ percentage }: ProgressBarProps) {
   return (
     <View style={styles.container}>
       <View style={[styles.bar, {
@@ -14,7 +14,7 @@ const ProgressBar = ({ percentage }: ProgressBarProps) => {
       }]} />
     </View>
   )
-}
+})
 
 export default ProgressBar
 
