@@ -4,7 +4,6 @@ import ChoiceView, { ChoiceStatus } from "./ChoiceView"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store"
 import { testActions } from "../store/testStore"
-import { useCallback } from "react"
 
 const TestQuestionView = () => {
   const dispatch = useDispatch()
@@ -13,11 +12,12 @@ const TestQuestionView = () => {
   const userAnswers = useSelector((state: RootState) => state.test.userAnswers)
 
   if (!test) return null
+
   const activeQuestion = test.questions[activeIndex]
   const { description, question, choices } = activeQuestion
-  const userAnswerId = userAnswers[activeQuestion.id]
-
-  const renderChoices = useCallback(() => {
+  const renderChoices = () => {
+    if (!test) return null
+    const userAnswerId = userAnswers[activeQuestion.id]
     return choices.map((c, i) => {
       const alreadyAnswered = !!userAnswerId
       const selected = userAnswerId === c.id
@@ -45,7 +45,7 @@ const TestQuestionView = () => {
         />
       )
     })
-  }, [choices, userAnswerId, activeQuestion.id, activeQuestion.correctChoiceId, testActions])
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
